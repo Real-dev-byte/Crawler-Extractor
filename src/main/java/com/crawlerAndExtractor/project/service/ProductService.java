@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -41,8 +43,20 @@ public class ProductService extends BaseProductService{
      * @throws Exception
      */
     public GetProdDetailResponse getProductDetails(String url, String skuId) throws Exception {
-        Date date = new Date();
-        return getProductDetailsHelper(url,skuId,new Timestamp(date.getTime()),true);
+        GetProdDetailResponse response = new GetProdDetailResponse();
+        URLtoSKUMapping urLtoSKUMapping = getURL(url,skuId);
+        Product product = productRepository.fetchProductFromDB(urLtoSKUMapping.getSkuId());
+
+        if(Objects.isNull(product)){
+            log.info("Product with skuId: {} not found in db. Fetching from given url...",urLtoSKUMapping.getSkuId());
+            URLtoSKUMapping urlToSkuWithProd=getDocument(url,skuId);
+            product=urlToSkuWithProd.getProduct();
+        }
+        responsePopulator(product.getTitle(),product.getLatestOfferPrice(), product.getDescription(),
+                product.getLatestOverAllCount(), product.getStar1(), product.getStar2(), product.getStar3(),
+                product.getStar4(), product.getStar5(), response);
+
+        return response;
     }
 
     /***
@@ -53,79 +67,30 @@ public class ProductService extends BaseProductService{
      * @return Handles response for /getProductDetailsBT. Fetches latest Product Details before given Timestamp.
      * @throws Exception
      */
-    public GetProdDetailResponse getProductDetails(String url, String skuId, Timestamp timestamp) throws Exception{
-        return getProductDetailsHelper(url,skuId,timestamp,false);
-    }
-
-    /***
-     *
-     * @param url
-     * @param skuId
-     * @param timestamp
-     * @param getLatestOfferPrice
-     * @return
-     * Flag getLatestOfferPrice decides if this call is regarding /getProductDetails or /getProductDetailsBT.
-     * If the flag is set(/getProductDetails) we can directly fetch the response from the product as it has latestOverAllCount and latestOfferPrice.
-     * Else we find product status before that timestamp and grab the required fields from respective Product Status.
-     * @throws Exception
-     */
-    private GetProdDetailResponse getProductDetailsHelper(String url, String skuId, Timestamp timestamp,Boolean getLatestOfferPrice) throws Exception {
+    public GetProdDetailResponse getProductDetailsBT(String url, String skuId, Timestamp timestamp) throws Exception{
         GetProdDetailResponse response = new GetProdDetailResponse();
         URLtoSKUMapping urLtoSKUMapping = getURL(url,skuId);
-        Product product = productRepository.fetchProductFromDB(urLtoSKUMapping.getSkuId());
-        ProductStatus productStatus = null;
 
-        if(Objects.isNull(product) && getLatestOfferPrice){
-            log.info("Product with skuId: {} not found in db. Fetching from given url...",urLtoSKUMapping.getSkuId());
-            URLtoSKUMapping urlToSkuWithProd=getDocument(url,skuId);
-            product=urlToSkuWithProd.getProduct();
-        }
-        else if(Objects.nonNull(product) && !getLatestOfferPrice){
-            log.info("Product with skuId: {} present in db. Fetching overallcount and offer Price from DB before timestamp: {} ...",product.getSkuId(),timestamp);
-            productStatus = productRepository.fetchProductStatusBeforeDate(product,urLtoSKUMapping.getSkuId(),timestamp);
+        Product productFromDB = productRepository.fetchProductFromDB(urLtoSKUMapping.getSkuId());
+
+        //Product was never crawled
+        if(Objects.isNull(productFromDB)){
+            String message = String.format("Product with skuId: not crawled",urLtoSKUMapping.getSkuId(),timestamp);
+            log.info(message);
+            throw new Exception(message);
         }
 
-        if(getLatestOfferPrice){
-            if(Objects.isNull(product)){
-                String message = "Could not fetch product from given url or skuId";
-                log.info(message);
-                throw new Exception(message);
-            }
+        //Product was created after the given timestamp
+        ProductStatus productStatus = productRepository.fetchProductStatusBeforeDate(productFromDB,timestamp);
+        if(Objects.isNull(productStatus)){
+            String message = String.format("Product with skuId: %s Absent in DB before time: %s",skuId,timestamp);
+            log.info(message);
+            throw new Exception(message);
         }
-        else {
-            if(Objects.isNull(product) || Objects.isNull(productStatus)){
-                String message = "Product Absent in DB before time " + timestamp;
-                log.info(message);
-                throw new Exception(message);
-            }
-        }
-
-        if(!getLatestOfferPrice && Objects.nonNull(productStatus)){
-            log.info("Product in DB before timestamp: {} was created at: {}",timestamp,productStatus.getCreatedAt());
-        }
-        GetProdDetailResponse.ratingsMap ratingsMap = new GetProdDetailResponse.ratingsMap();
-
-        response.setTitle(product.getTitle());
-        response.setDescription(product.getDescription());
-        if(getLatestOfferPrice){
-            response.setOfferPrice(product.getLatestOfferPrice());
-            ratingsMap.setOverallCount(product.getLatestOverAllCount());
-            ratingsMap.setStar_1(product.getStar1());
-            ratingsMap.setStar_2(product.getStar2());
-            ratingsMap.setStar_3(product.getStar3());
-            ratingsMap.setStar_4(product.getStar4());
-            ratingsMap.setStar_5(product.getStar5());
-        }
-        else {
-            response.setOfferPrice(productStatus.getOfferPrice());
-            ratingsMap.setOverallCount(productStatus.getOverallCount());
-            ratingsMap.setStar_1(productStatus.getStar1());
-            ratingsMap.setStar_2(productStatus.getStar2());
-            ratingsMap.setStar_3(productStatus.getStar3());
-            ratingsMap.setStar_4(productStatus.getStar4());
-            ratingsMap.setStar_5(productStatus.getStar5());
-        }
-        response.setRatingsMap(ratingsMap);
+        log.info("Product Status TimeStamp: {}", productStatus.getCreatedAt());
+        responsePopulator(productFromDB.getTitle(),productStatus.getOfferPrice(),productFromDB.getDescription()
+                ,productStatus.getOverallCount(),productStatus.getStar1(),productStatus.getStar2(),productStatus.getStar3()
+                ,productStatus.getStar4(),productStatus.getStar5(),response);
         return response;
     }
 
@@ -137,22 +102,23 @@ public class ProductService extends BaseProductService{
      */
     public GetProdDetailResponse getAllPriceForProduct(String skuId) throws Exception {
         GetProdDetailResponse prodDetailResponse = new GetProdDetailResponse();
-        URLtoSKUMapping urLtoSKUMapping = getURLFromSKU(skuId);
-        Product product = productRepository.fetchProductFromDB(urLtoSKUMapping.getSkuId());
-        if(Objects.isNull(product)){
-            String message = String.format("Link: {} not crawled",urLtoSKUMapping.getUrl());
+        log.info("Passed skuId: {}",skuId);
+        List<ProductStatus> productStatusList = productRepository.findAllProductStatusForSkuId(skuId);
+        if(CollectionUtils.isEmpty(productStatusList)){
+            String message = String.format("Link: %s not crawled",skuId);
             log.info(message);
             throw new Exception(message);
         }
-        List<ProductStatus> productStatusList = productRepository.getProductStatusListSortedByTime(product);
-        List<GetProdDetailResponse.prices> pricesList = new ArrayList<>();
+
+        List<GetProdDetailResponse.PriceTrend> priceTrendList = new ArrayList<>();
         for(ProductStatus productStatus:productStatusList){
-            GetProdDetailResponse.prices prices1 = new GetProdDetailResponse.prices();
-            prices1.setPrice(productStatus.getOfferPrice());
-            prices1.setTimestamp(productStatus.getCreatedAt());
-            pricesList.add(prices1);
+            GetProdDetailResponse.PriceTrend priceTrend = new GetProdDetailResponse.PriceTrend();
+            priceTrend.setPrice(productStatus.getOfferPrice());
+            priceTrend.setTimestamp(productStatus.getCreatedAt().toString());
+            priceTrendList.add(priceTrend);
+            log.info("Created at :{}",productStatus.getCreatedAt());
         }
-        prodDetailResponse.setPrices(pricesList);
+        prodDetailResponse.setPrices(priceTrendList);
         return prodDetailResponse;
     }
 
@@ -183,5 +149,19 @@ public class ProductService extends BaseProductService{
         }
         response.setGetProdDetailResponseList(getProdDetailResponseList);
         return response;
+    }
+
+    private void responsePopulator(String title, String offerPrice, String description, String overallCount, String star1, String star2, String star3, String star4, String star5, GetProdDetailResponse response) {
+        GetProdDetailResponse.ratingsMap ratingsMap = new GetProdDetailResponse.ratingsMap();
+        response.setTitle(title);
+        response.setDescription(description);
+        response.setOfferPrice(offerPrice);
+        ratingsMap.setOverallCount(overallCount);
+        ratingsMap.setStar_1(star1);
+        ratingsMap.setStar_2(star2);
+        ratingsMap.setStar_3(star3);
+        ratingsMap.setStar_4(star4);
+        ratingsMap.setStar_5(star5);
+        response.setRatingsMap(ratingsMap);
     }
 }

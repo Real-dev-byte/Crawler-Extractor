@@ -1,7 +1,6 @@
 package com.crawlerAndExtractor.project.controller;
 
 import com.crawlerAndExtractor.project.Response.BaseResponse;
-import com.crawlerAndExtractor.project.service.CrawlerSchedulerService;
 import com.crawlerAndExtractor.project.service.ProductService;
 import io.swagger.annotations.ApiParam;
 import org.mapstruct.Context;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.Date;
+
 
 
 @RestController
@@ -69,8 +68,7 @@ public class ProductController {
                                                          @ApiParam @RequestParam(name = "timestamp")Timestamp timestamp) {
         try {
             BaseResponse response;
-            httpRequest.setAttribute("date",new Date());
-            response = productService.getProductDetails(url,skuId,timestamp);
+            response = productService.getProductDetailsBT(url,skuId,timestamp);
             response.setStatusCode(200);
             response.setDisplayMessge("Successfully fetched product details");
             return response;

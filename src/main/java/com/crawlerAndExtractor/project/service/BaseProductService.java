@@ -1,6 +1,5 @@
 package com.crawlerAndExtractor.project.service;
 
-import com.crawlerAndExtractor.project.Constants;
 import com.crawlerAndExtractor.project.repository.ProductRepositoryImpl;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.*;
 import static com.crawlerAndExtractor.project.Constants.PROXY_CRAWL_PREFIX;
 
 
-public class BaseProductService {
+public abstract class BaseProductService {
     @Autowired
     private ProductRepositoryImpl productRepository;
 
@@ -35,7 +34,7 @@ public class BaseProductService {
         Product product = productRepository.fetchProductFromDB(fetchURL.getSkuId());
         log.info(fetchURL.url);
         Document document = null;
-        Element Title=null,ProductDescription=null,Price=null,Star5=null,Star4=null,Star3=null,Star2=null,Star1=null;
+        Element Title=null,ProductDescription=null,Price=null;
         try {
             Connection.Response response = Jsoup.connect(fetchURL.url)
                     .method(Connection.Method.GET)

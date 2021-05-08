@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 
-import java.sql.Timestamp;
+
 import java.util.List;
 
 @NoArgsConstructor
@@ -48,14 +48,14 @@ public class GetProdDetailResponse extends BaseResponse{
 
     @Setter
     @Getter
-    private List<prices> prices;
+    private List<PriceTrend> prices;
 
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class  prices{
-        private Timestamp timestamp;
+    public static class PriceTrend{
+        private String timestamp;
         private String price;
     }
 }

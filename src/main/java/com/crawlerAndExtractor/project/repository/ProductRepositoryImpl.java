@@ -83,17 +83,15 @@ public class ProductRepositoryImpl {
     }
 
     public Product fetchProductFromDB(String skuId) {
+        log.info("Finding Product with skuId:{}in db",skuId);
         Product product=productRepository.findProductBySkuId(skuId);
-        if(Objects.nonNull(product)){
-            log.info("Product found in db "+product.getSkuId());
-        }
         return product;
     }
 
-    public ProductStatus fetchProductStatusBeforeDate(Product product,String skuId, Timestamp date){
+    public ProductStatus fetchProductStatusBeforeDate(Product product, Timestamp date){
         ProductStatus productStatus1 = null;
         List<ProductStatus> productStatuses = getProductStatusListSortedByTime(product);
-
+        log.info("Fetching product just before: {}",date);
         for (ProductStatus productStatus:productStatuses){
             int b = date.compareTo(productStatus.getCreatedAt());
             if(b >= 0){
@@ -119,4 +117,11 @@ public class ProductRepositoryImpl {
         List<Product> productList = productRepository.findAll();
         return productList;
     }
+
+    public List<ProductStatus> findAllProductStatusForSkuId(String skuId){
+        List<ProductStatus> productStatusList = productRepository.findAllProductStatus (skuId);
+        return productStatusList;
+    }
+
+
 }
