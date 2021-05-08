@@ -85,11 +85,10 @@ public class ProductController {
 
     @RequestMapping(value = "/getPriceTrend", method = RequestMethod.GET)
     public BaseResponse getPriceTrend(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpServletResponse,
-                                          @ApiParam @RequestParam(name = "url") String url,
-                                          @ApiParam  @RequestParam(required = false,name = "skuId") String skuId) {
+                                          @ApiParam  @RequestParam(name = "skuId") String skuId) {
         try {
             BaseResponse response;
-            response = productService.getAllPriceForProduct(url,skuId);
+            response = productService.getAllPriceForProduct(skuId);
             response.setStatusCode(200);
             response.setDisplayMessge("Successfully fetched product details");
             return response;

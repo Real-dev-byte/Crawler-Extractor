@@ -3,7 +3,7 @@ package com.crawlerAndExtractor.project.repository;
 import com.crawlerAndExtractor.project.entity.Product;
 import com.crawlerAndExtractor.project.entity.ProductStatus;
 import com.crawlerAndExtractor.project.service.BaseProductService;
-import com.crawlerAndExtractor.project.service.ProductService;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class ProductRepositoryImpl {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product createProduct(BaseProductService.URLtoSKUMapping fetcURL, Product product, String skuId, Element Title, Element Price, Element ProductDescription, Element OverallCount) {
+    public Product createProduct(BaseProductService.URLtoSKUMapping fetcURL, Product product, String skuId, Element Title, Element Price, Element ProductDescription, Element OverallCount,String[] Ratings) {
 
         String title = Title != null?Title.text():null;
         String price = Price != null?Price.text():null;
@@ -33,25 +33,49 @@ public class ProductRepositoryImpl {
 
         if(Objects.isNull(product)) {
             product = new Product();
-            product.setDescription(productDescription);
-            product.setTitle(title);
             product.setSkuId(skuId);
             product.setCreated_at(timestamp);
         }
+        if (!StringUtils.isEmpty(productDescription))
+            product.setDescription(productDescription); // description can change
+        if(!StringUtils.isEmpty(title))
+            product.setTitle(title); //Title can change
+        if(!StringUtils.isEmpty(price))
+            product.setLatestOfferPrice(price); //LatestOfferPrice can change
+        if(!StringUtils.isEmpty(overallCount))
+            product.setLatestOverAllCount(overallCount);    //LatestOverAllCount can change
+
+        product.setUpdated_at(timestamp);
 
         ProductStatus productStatus=new ProductStatus();
         productStatus.setOfferPrice(price);
         productStatus.setOverallCount(overallCount);
         productStatus.setCreatedAt(timestamp);
         productStatus.setProduct(product);
+
+        //Set Ratings Percentage for product
+        product.setStar1(Ratings[1]);
+        product.setStar2(Ratings[2]);
+        product.setStar3(Ratings[3]);
+        product.setStar4(Ratings[4]);
+        product.setStar5(Ratings[5]);
+
+        //Set Ratings Percentage for product_status because
+        // if we want to fetch product details before a timestamp
+        productStatus.setStar1(Ratings[1]);
+        productStatus.setStar2(Ratings[2]);
+        productStatus.setStar3(Ratings[3]);
+        productStatus.setStar4(Ratings[4]);
+        productStatus.setStar5(Ratings[5]);
+
+        //add productStatus to ProductStatusList
         List<ProductStatus> productStatusList = product.getProductStatuses();
         if(CollectionUtils.isEmpty(productStatusList)){
             productStatusList = new ArrayList<>();
         }
         productStatusList.add(productStatus);
-        product.setLatestOverAllCount(overallCount);
-        product.setLatestOfferPrice(price);
-        product.setUpdated_at(timestamp);
+
+
         product.setProductStatuses(productStatusList);
         productRepository.save(product);
         fetcURL.setProduct(product);

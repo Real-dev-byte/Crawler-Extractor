@@ -33,6 +33,12 @@ public class Product {
 
     private Timestamp created_at;
 
+    private String Star5;
+    private String Star4;
+    private String Star3;
+    private String Star2;
+    private String Star1;
+
     private Timestamp updated_at;
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "product")

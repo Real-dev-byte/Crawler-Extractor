@@ -23,8 +23,9 @@ public class CrawlerSchedulerService {
     private ProductRepositoryImpl productRepository;
 
     @Autowired
-    private CrawlAllDocsService fetchDocGatewayService;
-    @Scheduled(fixedRate = Constants.CRAWL_PERIOD)
+    private ProductService productService;
+
+    @Scheduled(fixedRate = Constants.TIME_DIFFERENCE)
     public void crawlPages(){
 
         List<Product> productList = productRepository.findAllProducts();
@@ -36,7 +37,7 @@ public class CrawlerSchedulerService {
             String ProductUrl = "https://www.amazon.in" + product.getSkuId();
             //log.info("For URL: {} time lastUpdated is {} ",ProductUrl, diff);
             if(diff >= Constants.TIME_DIFFERENCE){
-                fetchDocGatewayService.crawlPageGatewayService(ProductUrl);
+                QueueService.getInstance().putEventInQueue(ProductUrl,productService);
             }
         }
     }

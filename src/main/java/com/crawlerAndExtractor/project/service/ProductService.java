@@ -110,10 +110,20 @@ public class ProductService extends BaseProductService{
         if(getLatestOfferPrice){
             response.setOfferPrice(product.getLatestOfferPrice());
             ratingsMap.setOverallCount(product.getLatestOverAllCount());
+            ratingsMap.setStar_1(product.getStar1());
+            ratingsMap.setStar_2(product.getStar2());
+            ratingsMap.setStar_3(product.getStar3());
+            ratingsMap.setStar_4(product.getStar4());
+            ratingsMap.setStar_5(product.getStar5());
         }
         else {
             response.setOfferPrice(productStatus.getOfferPrice());
             ratingsMap.setOverallCount(productStatus.getOverallCount());
+            ratingsMap.setStar_1(productStatus.getStar1());
+            ratingsMap.setStar_2(productStatus.getStar2());
+            ratingsMap.setStar_3(productStatus.getStar3());
+            ratingsMap.setStar_4(productStatus.getStar4());
+            ratingsMap.setStar_5(productStatus.getStar5());
         }
         response.setRatingsMap(ratingsMap);
         return response;
@@ -121,14 +131,13 @@ public class ProductService extends BaseProductService{
 
     /***
      *
-     * @param url
      * @param skuId
-     * @return Handles /getPriceTrend.Fetches price trend for given skuId or url.
+     * @return Handles /getPriceTrend.Fetches price trend for given skuId.
      * @throws Exception
      */
-    public GetProdDetailResponse getAllPriceForProduct(String url, String skuId) throws Exception {
+    public GetProdDetailResponse getAllPriceForProduct(String skuId) throws Exception {
         GetProdDetailResponse prodDetailResponse = new GetProdDetailResponse();
-        URLtoSKUMapping urLtoSKUMapping = getURL(url,skuId);
+        URLtoSKUMapping urLtoSKUMapping = getURLFromSKU(skuId);
         Product product = productRepository.fetchProductFromDB(urLtoSKUMapping.getSkuId());
         if(Objects.isNull(product)){
             String message = String.format("Link: {} not crawled",urLtoSKUMapping.getUrl());
@@ -163,6 +172,11 @@ public class ProductService extends BaseProductService{
             log.info("Product skuId: {}",product.getSkuId());
             GetProdDetailResponse.ratingsMap ratingsMap = new GetProdDetailResponse.ratingsMap();
             ratingsMap.setOverallCount(product.getLatestOverAllCount());
+            ratingsMap.setStar_1(product.getStar1());
+            ratingsMap.setStar_2(product.getStar2());
+            ratingsMap.setStar_3(product.getStar3());
+            ratingsMap.setStar_4(product.getStar4());
+            ratingsMap.setStar_5(product.getStar5());
             getProdDetailResponse.setRatingsMap(ratingsMap);
 
             getProdDetailResponseList.add(getProdDetailResponse);
