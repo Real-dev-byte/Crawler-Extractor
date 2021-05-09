@@ -28,4 +28,4 @@ Snapshots of product variable details like price and ratings. product_id column 
 ## [Postman API Collection and Documentation]
 
    [Postman API Collection and Documentation]: <https://documenter.getpostman.com/view/14468833/TzRRE96p>
-## Questions and Comments: rohmetradhananajay@gmail.com   
+## Questions and Comments: rohmetradhananjay@gmail.com   
