@@ -26,8 +26,9 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 )
 ## Features
 - Fetches Product Details from Amazon URL.(More in Postman API Collection Section)
-- Hourly crawling of all product urls in database.
-- Producer consumer pattern with shared queue for handling hourly crawls.
+- Scheduled crawling rate of 30 crawls/min.
+- Producer consumer pattern with shared queue for handling scheduled crawls.
+- Auto replay upon failed crawling of a particular URL while doing scheduled crawling 
 - Response Time of every API in logs.
 ## [Postman API Collection and Documentation]
 
