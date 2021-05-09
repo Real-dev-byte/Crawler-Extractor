@@ -24,7 +24,7 @@ public class ProductController {
 
     @RequestMapping(value = "/gethtml", method = RequestMethod.GET)
     public BaseResponse gethtml(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpServletResponse,
-                                @ApiParam @RequestParam(name = "url") String url,
+                                @ApiParam @RequestParam(required = false,name = "url") String url,
                                 @ApiParam  @RequestParam(required = false,name = "skuId") String skuId) {
         try {
             BaseResponse response;
@@ -42,7 +42,7 @@ public class ProductController {
 
     @RequestMapping(value = "/getProductDetails", method = RequestMethod.GET)
     public BaseResponse getProductDetails(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpServletResponse,
-                                          @ApiParam @RequestParam(name = "url") String url,
+                                          @ApiParam @RequestParam(required = false,name = "url") String url,
                                           @ApiParam  @RequestParam(required = false,name = "skuId") String skuId) {
         try {
             BaseResponse response;
@@ -59,7 +59,7 @@ public class ProductController {
 
     @RequestMapping(value = "/getProductDetailsBT", method = RequestMethod.GET)
     public BaseResponse getProductDetailsBeforeTimestamp(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpServletResponse,
-                                          @ApiParam @RequestParam(name = "url") String url,
+                                          @ApiParam @RequestParam(required = false,name = "url") String url,
                                           @ApiParam  @RequestParam(required = false,name = "skuId") String skuId,
                                                          @ApiParam @RequestParam(name = "timestamp")Timestamp timestamp) {
         try {

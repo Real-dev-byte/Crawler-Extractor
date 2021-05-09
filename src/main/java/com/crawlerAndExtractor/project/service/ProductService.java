@@ -4,6 +4,7 @@ import com.crawlerAndExtractor.project.Response.GetProdDetailResponse;
 import com.crawlerAndExtractor.project.entity.Product;
 import com.crawlerAndExtractor.project.entity.ProductStatus;
 import com.crawlerAndExtractor.project.repository.ProductRepositoryImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ProductService extends BaseProductService{
      */
     public GetProdDetailResponse getProductDetails(String url, String skuId) throws Exception {
         GetProdDetailResponse response = new GetProdDetailResponse();
-        URLtoSKUMapping urLtoSKUMapping = getURL(url,skuId);
+        URLtoSKUMapping urLtoSKUMapping = StringUtils.isEmpty(url)?getURLFromSKU(skuId):getURL(url,skuId);
         Product product = productRepository.fetchProductFromDB(urLtoSKUMapping.getSkuId());
 
         if(Objects.isNull(product)){
@@ -80,14 +81,14 @@ public class ProductService extends BaseProductService{
      */
     public GetProdDetailResponse getProductDetailsBT(String url, String skuId, Timestamp timestamp) throws Exception{
         GetProdDetailResponse response = new GetProdDetailResponse();
-        URLtoSKUMapping urLtoSKUMapping = getURL(url,skuId);
+        URLtoSKUMapping urLtoSKUMapping = StringUtils.isEmpty(url)?getURLFromSKU(skuId):getURL(url,skuId);
 
         Product productFromDB = productRepository.fetchProductFromDB(urLtoSKUMapping.getSkuId());
 
         //Product was never crawled
         if(Objects.isNull(productFromDB)){
             String message = String.format("Either Product with skuId: %s not crawled or Wrong URL entered",urLtoSKUMapping.getSkuId());
-            log.info(message);
+            log.error(message);
             throw new Exception(message);
         }
 
@@ -95,7 +96,7 @@ public class ProductService extends BaseProductService{
         ProductStatus productStatus = productRepository.fetchProductStatusBeforeDate(productFromDB,timestamp);
         if(Objects.isNull(productStatus)){
             String message = String.format("Product with skuId: %s Absent in DB before time: %s",skuId,timestamp);
-            log.info(message);
+            log.error(message);
             throw new Exception(message);
         }
         log.info("Product Status TimeStamp: {}", productStatus.getCreatedAt());
@@ -118,7 +119,7 @@ public class ProductService extends BaseProductService{
         List<ProductStatus> productStatusList = productRepository.findAllProductStatusForSkuId(skuId);
         if(CollectionUtils.isEmpty(productStatusList)){
             String message = String.format("SkuId: %s not crawled",skuId);
-            log.info(message);
+            log.error(message);
             throw new Exception(message);
         }
 

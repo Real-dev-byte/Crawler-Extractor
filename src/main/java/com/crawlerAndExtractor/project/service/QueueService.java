@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -38,7 +37,7 @@ public class QueueService {
     public void putEventInQueue(String url, ProductService productService) {
         prodService = productService;
         initialize();
-        if(eventQueue!=null && !eventQueue.contains(url)) {
+        if(!eventQueue.contains(url)) {
             eventQueue.add(url);
         }
     }
@@ -63,8 +62,6 @@ public class QueueService {
                         putEventInQueue(finalUrl,prodService);
                     }
                     finally {
-                        String res = (baseResponse!=null)?baseResponse.getHtmlDocument():"Not found";
-                        //log.info(String.format("URL: %s \nHTML: %s",finalUrl,res));
                         Thread.sleep(Constants.URL_CRAWL_DELAY);
                     }
                 } catch (InterruptedException ex) {

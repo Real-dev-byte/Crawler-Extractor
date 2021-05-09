@@ -32,7 +32,7 @@ public abstract class BaseProductService {
             throw new IllegalArgumentException("Please pass skuId or url as a request parameter.");
         }
 
-        URLtoSKUMapping fetchURL = getURL(url,skuId);
+        URLtoSKUMapping fetchURL = StringUtils.isEmpty(url)?getURLFromSKU(skuId):getURL(url,skuId);
         Product product = productRepository.fetchProductFromDB(fetchURL.getSkuId());
         log.info(fetchURL.url);
         Document document = null;
@@ -83,7 +83,6 @@ public abstract class BaseProductService {
     }
 
     private Boolean retryCrawlingIfFailed(Element title, Element price, Element productDescription, Element overallCount, String[] ratings) {
-        Boolean retry = false;
         if(Objects.isNull(title) && Objects.isNull(price) && Objects.isNull(productDescription) && Objects.isNull(overallCount)){
             for (String rating:ratings){
                 if(StringUtils.isNotEmpty(rating)){
@@ -104,7 +103,13 @@ public abstract class BaseProductService {
         urlSkuMap.setUrl(url);
         return urlSkuMap;
     }
-
+    protected URLtoSKUMapping getURLFromSKU(String skuId) {
+        URLtoSKUMapping urlSkuMap = new URLtoSKUMapping();
+        String url = "https://www.amazon.in/dp/" + skuId;
+        urlSkuMap.setSkuId(skuId);
+        urlSkuMap.setUrl(url);
+        return urlSkuMap;
+    }
 
     private String populateSkuIdFromURL(String SKUID,String url, String s) {
 
