@@ -14,7 +14,7 @@
     create scheme product
     use product
     ```
-- Now Run ProjectApplication.java 
+- Now Run ProjectApplication.java from IDE.
 - Then server will be up on port 9191.
 ## Database
 ### product_tbl:
