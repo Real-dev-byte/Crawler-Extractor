@@ -3,7 +3,7 @@
 ## How to Run
 - Clone this repository to your system.
 - Make sure you have Java and MySQL server installed.
-- If MySQL server is not installed follow this [URL]. Use this while installing ```sudo apt-get install mysql-server-8.0
+- If MySQL server is not installed follow this [URL]. Use this while installing ```sudo apt-get install mysql-server-8.0```
 - Import  and build in your IDE.
 - After that run these commands in terminal to create a databse with name 'product'.
     ```
