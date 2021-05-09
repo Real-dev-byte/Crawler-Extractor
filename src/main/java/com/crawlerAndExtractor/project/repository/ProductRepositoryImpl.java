@@ -23,10 +23,10 @@ public class ProductRepositoryImpl {
 
     public Product createProduct(BaseProductService.URLtoSKUMapping fetcURL, Product product, String skuId, Element Title, Element Price, Element ProductDescription, Element OverallCount,String[] Ratings) {
 
-        String title = Title != null?Title.text():null;
-        String price = Price != null?Price.text():null;
-        String productDescription = ProductDescription!=null?ProductDescription.text():null;
-        String overallCount = OverallCount!=null?OverallCount.text():null;
+        String title = Objects.nonNull(Title)?Title.text():null;
+        String price = Objects.nonNull(Price)?Price.text():null;
+        String productDescription = Objects.nonNull(ProductDescription)?ProductDescription.text():null;
+        String overallCount = Objects.nonNull(OverallCount)?OverallCount.text():null;
 
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
@@ -36,13 +36,13 @@ public class ProductRepositoryImpl {
             product.setSkuId(skuId);
             product.setCreated_at(timestamp);
         }
-        if (!StringUtils.isEmpty(productDescription))
+        if (StringUtils.isNotEmpty(productDescription))
             product.setDescription(productDescription); // description can change
-        if(!StringUtils.isEmpty(title))
+        if(StringUtils.isNotEmpty(title))
             product.setTitle(title); //Title can change
-        if(!StringUtils.isEmpty(price))
+        if(StringUtils.isNotEmpty(price))
             product.setLatestOfferPrice(price); //LatestOfferPrice can change
-        if(!StringUtils.isEmpty(overallCount))
+        if(StringUtils.isNotEmpty(overallCount))
             product.setLatestOverAllCount(overallCount);    //LatestOverAllCount can change
 
         product.setUpdated_at(timestamp);

@@ -1,5 +1,7 @@
 package com.crawlerAndExtractor.project.service;
 
+import com.crawlerAndExtractor.project.Constants;
+import com.crawlerAndExtractor.project.helper.RandomUserAgent;
 import com.crawlerAndExtractor.project.repository.ProductRepositoryImpl;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.util.*;
 
-import static com.crawlerAndExtractor.project.Constants.PROXY_CRAWL_PREFIX;
+
 
 
 public abstract class BaseProductService {
@@ -41,14 +43,14 @@ public abstract class BaseProductService {
                     .execute();
             log.info("Cookies: "+response.cookies());
             Map<String, String> cookies = new HashMap<>();
-            String proxyUrl = PROXY_CRAWL_PREFIX + fetchURL.url;
+            String proxyUrl =Constants.PROXY_CRAWL_PREFIX + fetchURL.url; //currently not using proxyurl
             document = Jsoup.connect(fetchURL.url).header("Accept-Encoding", "gzip, deflate")
-                    .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0")
+                    .userAgent(RandomUserAgent.getRandomUserAgent())
                     .maxBodySize(0)
                     .timeout(0)
                     .cookies(cookies)
                     .get();
-
+            log.info(String.valueOf(document));
                 Title = document.getElementById("productTitle");
                 ProductDescription = document.select("div#productDescription p").first();
                 Price = document.getElementById("priceblock_ourprice");
@@ -56,13 +58,21 @@ public abstract class BaseProductService {
                     Price = document.getElementById("priceblock_dealprice");
                 }
             String[] Ratings= new String[6];
-            Ratings[5] = document.select("table#histogramTable>tbody>tr>td:nth-child(3)>span>a").first().text();
-            Ratings[4] = document.select("table#histogramTable>tbody>tr:nth-child(2)>td:nth-child(3)>span>a").first().text();
-            Ratings[3] = document.select("table#histogramTable>tbody>tr:nth-child(3)>td:nth-child(3)>span>a").first().text();
-            Ratings[2] = document.select("table#histogramTable>tbody>tr:nth-child(4)>td:nth-child(3)>span>a").first().text();
-            Ratings[1] = document.select("table#histogramTable>tbody>tr:nth-child(5)>td:nth-child(3)>span>a").first().text();
-
+            Element Star5 =  document.select("table#histogramTable>tbody>tr>td:nth-child(3)>span>a").first();
+            Ratings[5] = Objects.nonNull(Star5)?Star5.text():null;
+            Element Star4 = document.select("table#histogramTable>tbody>tr:nth-child(2)>td:nth-child(3)>span>a").first();
+            Ratings[4] = Objects.nonNull(Star4)?Star4.text():null;
+            Element Star3 = document.select("table#histogramTable>tbody>tr:nth-child(3)>td:nth-child(3)>span>a").first();
+            Ratings[3] = Objects.nonNull(Star3)?Star3.text():null;
+            Element Star2 = document.select("table#histogramTable>tbody>tr:nth-child(4)>td:nth-child(3)>span>a").first();
+            Ratings[2] = Objects.nonNull(Star2)?Star2.text():null;
+            Element Star1 = document.select("table#histogramTable>tbody>tr:nth-child(5)>td:nth-child(3)>span>a").first();
+            Ratings[1] = Objects.nonNull(Star1)?Star1.text():null;
             Element OverallCount = document.select("div#averageCustomerReviews>span:nth-child(3)>a>span").first();
+            Boolean retry = retryCrawlingIfFailed(Title,Price,ProductDescription,OverallCount,Ratings);
+            if(retry){
+                throw new IOException("Unable to crawl. Try later");
+            }
             productRepository.createProduct(fetchURL,product,fetchURL.skuId,Title,Price,ProductDescription,OverallCount,Ratings);
         }
         catch (IOException e){
@@ -70,6 +80,19 @@ public abstract class BaseProductService {
         }
         fetchURL.setDocument(document);
         return fetchURL;
+    }
+
+    private Boolean retryCrawlingIfFailed(Element title, Element price, Element productDescription, Element overallCount, String[] ratings) {
+        Boolean retry = false;
+        if(Objects.isNull(title) && Objects.isNull(price) && Objects.isNull(productDescription) && Objects.isNull(overallCount)){
+            for (String rating:ratings){
+                if(StringUtils.isNotEmpty(rating)){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     protected URLtoSKUMapping getURL(String url, String skuId) {
@@ -82,13 +105,6 @@ public abstract class BaseProductService {
         return urlSkuMap;
     }
 
-    protected URLtoSKUMapping getURLFromSKU(String skuId) {
-        URLtoSKUMapping urlSkuMap = new URLtoSKUMapping();
-        String url = "https://www.amazon.in" + skuId;
-        urlSkuMap.setSkuId(skuId);
-        urlSkuMap.setUrl(url);
-        return urlSkuMap;
-    }
 
     private String populateSkuIdFromURL(String SKUID,String url, String s) {
 

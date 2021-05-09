@@ -55,14 +55,16 @@ public class QueueService {
                     String finalUrl = url;
                     BaseResponse baseResponse = null;
                     try {
-                        if(StringUtils.isNotBlank(finalUrl))
+                        if(StringUtils.isNotEmpty(finalUrl))
                             baseResponse = prodService.gethtml(finalUrl, null);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        log.error("Error occured while fetching URL: %s",finalUrl);
+                        //Push the URL to the end of the queue for retrying crawling this url
+                        putEventInQueue(finalUrl,prodService);
                     }
                     finally {
                         String res = (baseResponse!=null)?baseResponse.getHtmlDocument():"Not found";
-                        log.info(String.format("URL: %s \nHTML: %s",finalUrl,res));
+                        //log.info(String.format("URL: %s \nHTML: %s",finalUrl,res));
                         Thread.sleep(Constants.URL_CRAWL_DELAY);
                     }
                 } catch (InterruptedException ex) {
