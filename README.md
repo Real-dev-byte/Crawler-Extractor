@@ -2,11 +2,11 @@
 
 ## How to Run
 - Clone this repository to your system.
-- Make sure you have Java and MySQL installed.
+- Make sure you have Java and MySQL server installed.
 - Import  and build in your IDE.
 - After that run these commands in terminal to create a databse with name 'product'.
     ```
-    Login to MySQL terminal
+    Login to your MySQL terminal and replace username and password in application.properties file
     create scheme product
     use product
     ```
