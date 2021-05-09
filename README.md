@@ -14,9 +14,9 @@
 - Then server will be up on port 9191.
 ## Database
 ### Product:
-Complete and latest updated information regarding a product like title, description, skuId, etc.
+Complete and latest updated information regarding a product like title, description, skuId, latest offer price and latest ratings.
 ### Product Status: 
-Snapshots of product variable details like price and ratings.
+Snapshots of product variable details like price and ratings. product_id column is a foreign key referencing to primary key of product table.
 
 ![GitHub Logo](https://github.com/Real-dev-byte/Crawler-Extractor/blob/8da5efdb0f96e92a0b887dd9d5a2d263b656b009/DatabaseScheme.png
 )
