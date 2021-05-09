@@ -16,6 +16,7 @@
 ![GitHub Logo](https://github.com/Real-dev-byte/Crawler-Extractor/blob/8da5efdb0f96e92a0b887dd9d5a2d263b656b009/DatabaseScheme.png
 )
 ## Features
+- Fetches Product Details from Amazon URL.(More in Postman API Collection Section)
 - Hourly crawling of all product urls in database.
 - Producer consumer pattern with shared queue for handling hourly crawls.
 - Response Time of every API in logs.
