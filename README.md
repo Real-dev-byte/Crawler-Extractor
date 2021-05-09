@@ -13,10 +13,11 @@
 - Now Run ProjectApplication.java 
 - Then server will be up on port 9191.
 ## Database
-# Product:
+### Product:
 Complete and latest updated information regarding a product like title, description, skuId, etc.
-# Product Status: 
+### Product Status: 
 Snapshots of product variable details like price and ratings.
+
 ![GitHub Logo](https://github.com/Real-dev-byte/Crawler-Extractor/blob/8da5efdb0f96e92a0b887dd9d5a2d263b656b009/DatabaseScheme.png
 )
 ## Features
