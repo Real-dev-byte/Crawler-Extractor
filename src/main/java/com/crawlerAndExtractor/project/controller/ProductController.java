@@ -29,14 +29,12 @@ public class ProductController {
         try {
             BaseResponse response;
             response = productService.gethtml(url,skuId);
-            response.setStatusCode(200);
             response.setDisplayMessge("Successfully fetched HTML from given URL");
             return response;
         }
         catch (Exception e){
             BaseResponse response = new BaseResponse();
             response.setDisplayMessge(e.getMessage());
-            response.setStatusCode(400);
             return response;
         }
 
@@ -49,14 +47,12 @@ public class ProductController {
         try {
             BaseResponse response;
             response = productService.getProductDetails(url,skuId);
-            response.setStatusCode(200);
             response.setDisplayMessge("Successfully fetched product details");
             return response;
         }
         catch (Exception e){
             BaseResponse response = new BaseResponse();
             response.setDisplayMessge(e.getMessage());
-            response.setStatusCode(400);
             return response;
         }
     }
@@ -69,14 +65,12 @@ public class ProductController {
         try {
             BaseResponse response;
             response = productService.getProductDetailsBT(url,skuId,timestamp);
-            response.setStatusCode(200);
             response.setDisplayMessge("Successfully fetched product details");
             return response;
         }
         catch (Exception e){
             BaseResponse response = new BaseResponse();
             response.setDisplayMessge(e.getMessage());
-            response.setStatusCode(400);
             return response;
         }
     }
@@ -87,14 +81,12 @@ public class ProductController {
         try {
             BaseResponse response;
             response = productService.getAllPriceForProduct(skuId);
-            response.setStatusCode(200);
             response.setDisplayMessge("Successfully fetched product details");
             return response;
         }
         catch (Exception e){
             BaseResponse response = new BaseResponse();
             response.setDisplayMessge(e.getMessage());
-            response.setStatusCode(400);
             return response;
         }
     }
@@ -104,14 +96,12 @@ public class ProductController {
         try {
             BaseResponse response;
             response = productService.getAllProducts();
-            response.setStatusCode(200);
             response.setDisplayMessge("Successfully fetched product details");
             return response;
         }
         catch (Exception e){
             BaseResponse response = new BaseResponse();
             response.setDisplayMessge(e.getMessage());
-            response.setStatusCode(400);
             return response;
         }
     }

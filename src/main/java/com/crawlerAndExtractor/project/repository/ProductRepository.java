@@ -14,6 +14,6 @@ public interface ProductRepository extends JpaRepository<Product,Integer>{
      @Query(value = "SELECT P FROM Product  P WHERE P.skuId = ?1")
      Product findProductBySkuId(String skuId);
 
-     @Query(value = "SELECT PS FROM ProductStatus PS where PS.product.skuId = ?1 ORDER BY PS.createdAt DESC")
+     @Query(value = "SELECT PS FROM ProductStatus PS where PS.product.skuId = ?1")
      List<ProductStatus> findAllProductStatus(String skuId);
 }

@@ -20,6 +20,15 @@ public class ProductService extends BaseProductService{
     private static final Logger log = LoggerFactory.getLogger(ProductService.class);
     @Autowired
     private ProductRepositoryImpl productRepository;
+
+    /***
+     *
+     * @param url
+     * @param skuId
+     * @returnBaseResponse
+     * Crawls given URL and returns its HTML
+     * @throws IOException
+     */
     public BaseResponse gethtml(String url, String skuId) throws IOException {
         BaseResponse response = new BaseResponse();
             URLtoSKUMapping urLtoSKUMapping = getDocument(url,skuId);
@@ -39,7 +48,8 @@ public class ProductService extends BaseProductService{
      *
      * @param url
      * @param skuId
-     * @return Handles response for /getProductDetails. Fetches latest Product Details.
+     * @return GetProdDetailResponse
+     * Fetches latest Product Details.
      * @throws Exception
      */
     public GetProdDetailResponse getProductDetails(String url, String skuId) throws Exception {
@@ -64,7 +74,8 @@ public class ProductService extends BaseProductService{
      * @param url
      * @param skuId
      * @param timestamp
-     * @return Handles response for /getProductDetailsBT. Fetches latest Product Details before given Timestamp.
+     * @return GetProdDetailResponse
+     * Fetches latest Product Details before given Timestamp.
      * @throws Exception
      */
     public GetProdDetailResponse getProductDetailsBT(String url, String skuId, Timestamp timestamp) throws Exception{
@@ -75,7 +86,7 @@ public class ProductService extends BaseProductService{
 
         //Product was never crawled
         if(Objects.isNull(productFromDB)){
-            String message = String.format("Product with skuId: not crawled",urLtoSKUMapping.getSkuId(),timestamp);
+            String message = String.format("Either Product with skuId: %s not crawled or Wrong URL entered",urLtoSKUMapping.getSkuId());
             log.info(message);
             throw new Exception(message);
         }
@@ -97,7 +108,8 @@ public class ProductService extends BaseProductService{
     /***
      *
      * @param skuId
-     * @return Handles /getPriceTrend.Fetches price trend for given skuId.
+     * @return GetProdDetailResponse
+     *Fetches price trend for given skuId.
      * @throws Exception
      */
     public GetProdDetailResponse getAllPriceForProduct(String skuId) throws Exception {
@@ -105,7 +117,7 @@ public class ProductService extends BaseProductService{
         log.info("Passed skuId: {}",skuId);
         List<ProductStatus> productStatusList = productRepository.findAllProductStatusForSkuId(skuId);
         if(CollectionUtils.isEmpty(productStatusList)){
-            String message = String.format("Link: %s not crawled",skuId);
+            String message = String.format("SkuId: %s not crawled",skuId);
             log.info(message);
             throw new Exception(message);
         }
@@ -124,7 +136,8 @@ public class ProductService extends BaseProductService{
 
     /***
      *
-     * @return Handles /getAllProducts. Fetches all products from DB.
+     * @return BaseResponse
+     * Handles /getAllProducts. Fetches all products from DB.
      */
     public BaseResponse getAllProducts() {
         BaseResponse response = new BaseResponse();

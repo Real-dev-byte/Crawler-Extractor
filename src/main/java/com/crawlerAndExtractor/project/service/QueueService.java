@@ -1,6 +1,8 @@
 package com.crawlerAndExtractor.project.service;
 
+import com.crawlerAndExtractor.project.Constants;
 import com.crawlerAndExtractor.project.Response.BaseResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,14 +55,15 @@ public class QueueService {
                     String finalUrl = url;
                     BaseResponse baseResponse = null;
                     try {
-                        baseResponse = prodService.gethtml(finalUrl, null);
+                        if(StringUtils.isNotBlank(finalUrl))
+                            baseResponse = prodService.gethtml(finalUrl, null);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     finally {
                         String res = (baseResponse!=null)?baseResponse.getHtmlDocument():"Not found";
-                        log.info("HTML for URL: "+ res);
-                        Thread.sleep(600000);
+                        log.info(String.format("URL: %s \nHTML: %s",finalUrl,res));
+                        Thread.sleep(Constants.URL_CRAWL_DELAY);
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();

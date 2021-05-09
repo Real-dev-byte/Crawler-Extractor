@@ -20,9 +20,6 @@ public class BaseResponse {
     private String displayMessge;
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private int statusCode;
-
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private String htmlDocument;
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)

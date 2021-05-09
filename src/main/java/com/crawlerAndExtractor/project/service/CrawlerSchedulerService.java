@@ -10,14 +10,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class CrawlerSchedulerService {
     private static final Logger log = LoggerFactory.getLogger(CrawlerSchedulerService.class);
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Autowired
     private ProductRepositoryImpl productRepository;
@@ -25,7 +24,7 @@ public class CrawlerSchedulerService {
     @Autowired
     private ProductService productService;
 
-    @Scheduled(fixedRate = Constants.TIME_DIFFERENCE)
+    @Scheduled(fixedRate = Constants.CRAWL_TIME_DIFFERENCE)
     public void crawlPages(){
 
         List<Product> productList = productRepository.findAllProducts();
@@ -34,9 +33,9 @@ public class CrawlerSchedulerService {
             long currentTimestamp = date.getTime();
             Timestamp lastUpdated = product.getUpdated_at();
             long diff = currentTimestamp - lastUpdated.getTime();
-            String ProductUrl = "https://www.amazon.in" + product.getSkuId();
+            String ProductUrl = "https://www.amazon.in/dp/" + product.getSkuId();
             //log.info("For URL: {} time lastUpdated is {} ",ProductUrl, diff);
-            if(diff >= Constants.TIME_DIFFERENCE){
+            if(diff >= Constants.CRAWL_TIME_DIFFERENCE){
                 QueueService.getInstance().putEventInQueue(ProductUrl,productService);
             }
         }

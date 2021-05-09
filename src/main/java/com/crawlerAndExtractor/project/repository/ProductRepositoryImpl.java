@@ -90,7 +90,9 @@ public class ProductRepositoryImpl {
 
     public ProductStatus fetchProductStatusBeforeDate(Product product, Timestamp date){
         ProductStatus productStatus1 = null;
-        List<ProductStatus> productStatuses = getProductStatusListSortedByTime(product);
+
+        List<ProductStatus> productStatuses = product.getProductStatuses();
+        Collections.reverse(productStatuses);
         log.info("Fetching product just before: {}",date);
         for (ProductStatus productStatus:productStatuses){
             int b = date.compareTo(productStatus.getCreatedAt());
@@ -102,16 +104,6 @@ public class ProductRepositoryImpl {
         return productStatus1;
     }
 
-    public List<ProductStatus> getProductStatusListSortedByTime(Product product) {
-        List<ProductStatus> productStatuses = product.getProductStatuses();
-        Collections.sort(productStatuses, new Comparator<ProductStatus>() {
-            @Override
-            public int compare(ProductStatus o1, ProductStatus o2) {
-                return o2.getCreatedAt().compareTo(o1.getCreatedAt());
-            }
-        });
-        return productStatuses;
-    }
 
     public List<Product> findAllProducts() {
         List<Product> productList = productRepository.findAll();
