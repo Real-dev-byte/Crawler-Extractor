@@ -13,19 +13,24 @@
 - Now Run ProjectApplication.java 
 - Then server will be up on port 9191.
 ## Database
-### Product:
-Complete and latest updated information regarding a product like title, description, skuId, latest offer price and latest ratings.
-### Product Status: 
-Snapshots of product variable details like price and ratings. product_id column is a foreign key referencing to primary key of product table.
+### product_tbl:
+- Complete and latest updated information regarding a product like title, description, skuId, latest offer price and latest ratings.
+- For a particular skuId we would make entry only once in product_tbl. 
+### product_status: 
+- Snapshots of product variable details like price and ratings. product_id column is a foreign key referencing to primary key of product table.
+-  This was required for getting product details before a particular timestamp.
+
+_Note: producttbl and product_status has one to many bidirectional relationship_
 
 ![GitHub Logo](https://github.com/Real-dev-byte/Crawler-Extractor/blob/8da5efdb0f96e92a0b887dd9d5a2d263b656b009/DatabaseScheme.png
 )
 ## Features
 - Fetches Product Details from Amazon URL.(More in Postman API Collection Section)
-- Hourly crawling of all product urls in database.
-- Producer consumer pattern with shared queue for handling hourly crawls.
+- Scheduled crawling rate of 30 crawls/min.
+- Producer consumer pattern with shared queue for handling scheduled crawls.
+- Auto replay upon failed crawling of a particular URL while doing scheduled crawling 
 - Response Time of every API in logs.
 ## [Postman API Collection and Documentation]
 
    [Postman API Collection and Documentation]: <https://documenter.getpostman.com/view/14468833/TzRRE96p>
-## Questions and Comments: rohmetradhananajay@gmail.com   
+## Questions and Comments: rohmetradhananjay@gmail.com   
