@@ -6,7 +6,7 @@
 - Import  and build in your IDE.
 - After that run these commands in terminal to create a databse with name 'product'.
     ```
-    sudo mysql -u root
+    Login to MySQL terminal
     create scheme product
     use product
     ```
