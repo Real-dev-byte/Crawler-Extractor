@@ -22,7 +22,10 @@
 - product_id column is a foreign key referencing to primary key of product table.
 -  This was required for getting product details before a particular timestamp.
 
-_Note: product_tbl and product_status has one to many bidirectional relationship_
+---
+**NOTE**
+product_tbl and product_status has one to many bidirectional relationship
+---
 
 ![GitHub Logo](https://github.com/Real-dev-byte/Crawler-Extractor/blob/8da5efdb0f96e92a0b887dd9d5a2d263b656b009/DatabaseScheme.png
 )
@@ -33,7 +36,10 @@ _Note: product_tbl and product_status has one to many bidirectional relationship
 - Response Time of every API in logs.
 - Scheduled Crawling in product_status Table snapshot
 ![Scheduled Crawling Rate](https://github.com/Real-dev-byte/Crawler-Extractor/blob/5caeb677e590cdbeb92b37b9115bd81f2aa05145/crawl-rate.png)
-### _NOTE: Here crawling of product with id 11 got failed but got auto replayed in the same time slice._
+---
+**NOTE**
+Here crawling of product with id 11 got failed but got auto replayed in the same time slice.
+---
 
 ## [Postman API Collection and Documentation]
 
