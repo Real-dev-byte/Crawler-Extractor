@@ -38,10 +38,10 @@ public abstract class BaseProductService {
         Document document = null;
         Element Title=null,ProductDescription=null,Price=null;
         try {
-            Connection.Response response = Jsoup.connect(fetchURL.url)
-                    .method(Connection.Method.GET)
-                    .execute();
-            log.info("Cookies: "+response.cookies());
+//            Connection.Response response = Jsoup.connect(fetchURL.url)
+//                    .method(Connection.Method.GET)
+//                    .execute();
+//            log.info("Cookies: "+response.cookies());
             Map<String, String> cookies = new HashMap<>();
             //String proxyUrl =Constants.PROXY_CRAWL_PREFIX + fetchURL.url; //currently not using proxyurl
             document = Jsoup.connect(fetchURL.url).header("Accept-Encoding", "gzip, deflate")
