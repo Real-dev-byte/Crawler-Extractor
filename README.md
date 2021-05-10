@@ -36,6 +36,192 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 ### _NOTE: Here crawling of product with id 11 got failed but got auto replayed in the same time slice._
 
 ## [Postman API Collection and Documentation]
+
+## Request
+```
+curl --location -g --request GET 'http://localhost:9191/gethtml?url={{amazonUrl}}&skuId={{skuId}}'
+```
+## Response
+```
+{
+    "displayMessge": "Successfully fetched HTML from given URL",
+    "htmlDocument":"<!doctype html>\n<!--[if IE 8]><html data-19ax5a9jf=\"dingo\" lang=\"en-in\" class=\"a-no-js a-lt-ie10 a-lt-ie9 a-ie8\"><![endif]-->\n<!--[if IE 9]><html data-19ax5a9jf=\"dingo\" lang=\"en-in\" class=\"a-no-j"
+}
+```
+## Request
+```
+curl --location -g --request GET 'http://localhost:9191/getProductDetails?skuId={{skuId}}&url={{amazonUrl}}'
+```
+## Response
+```
+{
+    "displayMessge": "Successfully fetched product details",
+    "title": "Himalaya Herbals Purifying Neem Face Wash, 200ml",
+    "offerPrice": "₹ 167.00",
+    "description": "Specially formulated to give you clear, problem free skin, a soap-free, daily use face wash gel that cleanses your skin by removing excess oil and impurities without over-drying. Neem, well-known for its purifying and antibacterial properties, kills problem-causing bacteria. Combined with Turmeric, it helps control acne and pimples leaving your skin soft, clear, refreshed and problem-free.",
+    "ratingsMap": {
+        "overallCount": "5,066 ratings",
+        "5Star": "60%",
+        "4Star": "27%",
+        "3Star": "9%",
+        "2Star": "2%",
+        "1Star": "3%"
+    }
+}
+```
+## Request
+```
+curl --location -g --request GET 'http://localhost:9191/getProductDetailsBT?timestamp={{timestamp}}&url={{amazonUrl}}&skuId={{skuId}}'
+```
+## Response
+```
+{
+    "displayMessge": "Successfully fetched product details",
+    "title": "Dr Trust (USA) Waterproof Flexible Tip Digital Thermometer (White) … …",
+    "offerPrice": "₹ 299.00",
+    "description": "Dr Trust (Usa) Waterproof Flexible Tip Digital Thermometer Comes In White Colour. Flexible Soft Tip Fits Naturally Under Tongue Or Under Arm. Flexible Probe Conforms The Mouth. No Hazard Compared To Broken Mercury Glass Thermometers.",
+    "ratingsMap": {
+        "overallCount": "5,403 ratings",
+        "5Star": "52%",
+        "4Star": "29%",
+        "3Star": "11%",
+        "2Star": "3%",
+        "1Star": "6%"
+    }
+}
+```
+## Request
+```
+curl --location -g --request GET 'http://localhost:9191/getPriceTrend?skuId={{skuId}}'
+```
+## Response
+```
+{
+    "displayMessge": "Successfully fetched product details",
+    "prices": [
+        {
+            "timestamp": "2021-05-10 01:12:24.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:12:35.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:12:38.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:12:47.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:12:54.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:13:02.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:13:09.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:13:17.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 01:13:24.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 02:16:07.0",
+            "price": "₹ 615.00"
+        },
+        {
+            "timestamp": "2021-05-10 22:52:11.0",
+            "price": "₹ 615.00"
+        }
+    ]
+}
+```
+## Request
+```
+curl --location --request GET 'http://localhost:9191/getAllProducts'
+```
+## Response
+```
+{
+    "displayMessge": "Successfully fetched product details",
+    "getProdDetailResponseList": [
+        {
+            "title": "Pringles Cheddar Cheese, 169G (Pack Of 2)",
+            "offerPrice": "₹ 615.00",
+            "description": "We Didn'T Use Just Any Cheese Flavor In These Crisps. We Went With Cheddar – The King Of Cheeses. So You Could Even Say It’S A Royal Flavor. It’S So Majestically Good, You Might Not Want To Mention It To Your Lactose-Intolerant Friends.",
+            "ratingsMap": {
+                "overallCount": "10 ratings",
+                "5Star": "16%",
+                "4Star": "14%",
+                "3Star": "15%",
+                "2Star": "27%",
+                "1Star": "28%"
+            }
+        },
+        {
+            "title": "OnePlus 9R 5G (Carbon Black, 8GB RAM, 128GB Storage) | Extra INR 2,000 OFF on Exchange",
+            "offerPrice": "₹ 39,999.00",
+            "description": "The All New OnePlus 9 R, Level Up - the New onePlus 9R comes with Qualcomm Snapdragon 870 5G with upgraded Qualcomm Kryo 585 CPU that performs intense mobile computing at up to 3.2 GHz and also comes with an ultra-fast Qualcomm Adreno 650 GPU for superb o",
+            "ratingsMap": {
+                "overallCount": "1,206 ratings",
+                "5Star": "56%",
+                "4Star": "24%",
+                "3Star": "7%",
+                "2Star": "4%",
+                "1Star": "9%"
+            }
+        },
+        {
+            "title": "The White Willow Orthopaedic Bed Wedge Acid Reflux Memory Foam Pillow for Sleeping ,Back & Neck Pain Relief , Pregnancy Maternity , Anti Snoring- (17.5\" x 18\" x 11\")- Black",
+            "offerPrice": "₹ 2,899.00",
+            "ratingsMap": {
+                "overallCount": "662 ratings",
+                "5Star": "49%",
+                "4Star": "24%",
+                "3Star": "12%",
+                "2Star": "6%",
+                "1Star": "10%"
+            }
+        },
+        {
+            "title": "Dr Trust (USA) Waterproof Flexible Tip Digital Thermometer (White) … …",
+            "offerPrice": "₹ 299.00",
+            "description": "Dr Trust (Usa) Waterproof Flexible Tip Digital Thermometer Comes In White Colour. Flexible Soft Tip Fits Naturally Under Tongue Or Under Arm. Flexible Probe Conforms The Mouth. No Hazard Compared To Broken Mercury Glass Thermometers.",
+            "ratingsMap": {
+                "overallCount": "5,403 ratings",
+                "5Star": "52%",
+                "4Star": "29%",
+                "3Star": "11%",
+                "2Star": "3%",
+                "1Star": "6%"
+            }
+        },
+        {
+            "title": "Himalaya Herbals Purifying Neem Face Wash, 200ml",
+            "offerPrice": "₹ 167.00",
+            "description": "Specially formulated to give you clear, problem free skin, a soap-free, daily use face wash gel that cleanses your skin by removing excess oil and impurities without over-drying. Neem, well-known for its purifying and antibacterial properties, kills probl",
+            "ratingsMap": {
+                "overallCount": "5,066 ratings",
+                "5Star": "60%",
+                "4Star": "27%",
+                "3Star": "9%",
+                "2Star": "2%",
+                "1Star": "3%"
+            }
+        }
+    ]
+}
+```
     
    [Postman API Collection and Documentation]: <https://documenter.getpostman.com/view/14468833/TzRRE96p>
    [URL]: <https://docs.rackspace.com/support/how-to/install-mysql-server-on-the-ubuntu-operating-system/>
