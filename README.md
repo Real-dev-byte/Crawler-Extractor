@@ -34,6 +34,7 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 - Response Time of every API in logs.
 ![Scheduled Crawling Rate](https://github.com/Real-dev-byte/Crawler-Extractor/blob/6b78db5aa8f1bf145313897c8b5b802d3767f1db/Scheduled%20crawling%20rate.png
 )
+### _NOTE: Here crawling of products with id 2,7,17 got failed but got auto replayed in the same time slice._
 
 ## [Postman API Collection and Documentation]
     
