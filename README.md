@@ -32,8 +32,8 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 - Producer consumer pattern with Blocking queue for handling scheduling of crawls.
 - Response Time of every API in logs.
 - Scheduled Crawling in product_status Table snapshot
-![Scheduled Crawling Rate](https://github.com/Real-dev-byte/Crawler-Extractor/blob/b4a826d09cd8e9f3328b28931b1fd99e5d65dd74/CrawlRate.png)
-### _NOTE: Here crawling of products with id 12,19,20 got failed but got auto replayed in the same time slice._
+![Scheduled Crawling Rate](https://github.com/Real-dev-byte/Crawler-Extractor/blob/5caeb677e590cdbeb92b37b9115bd81f2aa05145/crawl-rate.png)
+### _NOTE: Here crawling of product with id 11 got failed but got auto replayed in the same time slice._
 
 ## [Postman API Collection and Documentation]
     
