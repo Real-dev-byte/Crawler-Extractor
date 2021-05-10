@@ -18,7 +18,8 @@
 - Complete and latest updated information regarding a product like title, description, skuId, latest offer price and latest ratings.
 - For a particular skuId we would make entry only once in product_tbl. 
 ### product_status: 
-- Snapshots of product variable details like price and ratings. product_id column is a foreign key referencing to primary key of product table.
+- Snapshots of product variable details like price and ratings whenever a url is crawled. 
+- product_id column is a foreign key referencing to primary key of product table.
 -  This was required for getting product details before a particular timestamp.
 
 _Note: producttbl and product_status has one to many bidirectional relationship_
@@ -28,8 +29,7 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 ## Features
 - Fetches Product Details from Amazon URL.(More in Postman API Collection Section)
 - Support for Scheduled crawling rate after a particular time delay.
-- Producer consumer pattern with shared queue for handling scheduling of crawls.
-- Auto replay upon failed crawling of a particular URL while doing scheduled crawling.
+- Producer consumer pattern with Blocking queue for handling scheduling of crawls.
 - Response Time of every API in logs.
 ## [Postman API Collection and Documentation]
     
