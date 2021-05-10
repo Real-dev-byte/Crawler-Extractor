@@ -54,8 +54,11 @@ public abstract class BaseProductService {
                 Title = document.getElementById("productTitle");
                 ProductDescription = document.select("div#productDescription p").first();
                 Price = document.getElementById("priceblock_ourprice");
-                if (Price == null) {
+                if (Objects.isNull(Price)) {
                     Price = document.getElementById("priceblock_dealprice");
+                }
+                if(Objects.isNull(Price)){
+                    Price = document.getElementById("priceblock_saleprice");
                 }
             String[] Ratings= new String[6];
             Element Star5 =  document.select("table#histogramTable>tbody>tr>td:nth-child(3)>span>a").first();
