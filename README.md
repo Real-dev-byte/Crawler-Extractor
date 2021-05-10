@@ -8,8 +8,8 @@
 - After that run these commands in terminal to create a databse with name 'product'.
     ```
     Login to your MySQL terminal and replace username and password in application.properties file as per your MySQL Credentials
-    create scheme product
-    use product
+    create database product;
+    use product;
     ```
 - Now Run ProjectApplication.java from IDE.
 - Then server will be up on port 9191.
