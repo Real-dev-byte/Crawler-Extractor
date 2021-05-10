@@ -43,7 +43,7 @@ public abstract class BaseProductService {
                     .execute();
             log.info("Cookies: "+response.cookies());
             Map<String, String> cookies = new HashMap<>();
-            String proxyUrl =Constants.PROXY_CRAWL_PREFIX + fetchURL.url; //currently not using proxyurl
+            //String proxyUrl =Constants.PROXY_CRAWL_PREFIX + fetchURL.url; //currently not using proxyurl
             document = Jsoup.connect(fetchURL.url).header("Accept-Encoding", "gzip, deflate")
                     .userAgent(RandomUserAgent.getRandomUserAgent())
                     .maxBodySize(0)

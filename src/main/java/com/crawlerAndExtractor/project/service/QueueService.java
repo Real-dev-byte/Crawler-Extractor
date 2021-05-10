@@ -38,7 +38,11 @@ public class QueueService {
         prodService = productService;
         initialize();
         if(!eventQueue.contains(url)) {
-            eventQueue.add(url);
+            try {
+                eventQueue.put(url);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -50,18 +54,18 @@ public class QueueService {
             for (;;) {
                 String url = null;
                 try {
-                    url = eventQueue.poll();
+                    url = eventQueue.take();
                     String finalUrl = url;
                     BaseResponse baseResponse = null;
                     try {
-                        if(StringUtils.isNotEmpty(finalUrl))
-                            baseResponse = prodService.gethtml(finalUrl, null);
+                        baseResponse = prodService.gethtml(finalUrl, null);
                     } catch (Exception e) {
                         log.error("Error occured while fetching URL: %s",finalUrl);
                         //Push the URL to the end of the queue for retrying crawling this url
                         putEventInQueue(finalUrl,prodService);
                     }
                     finally {
+                        log.info("HTML: {}",String.valueOf(baseResponse));
                         Thread.sleep(Constants.URL_CRAWL_DELAY);
                     }
                 } catch (InterruptedException ex) {
