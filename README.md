@@ -36,12 +36,15 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 ### _NOTE: Here crawling of product with id 11 got failed but got auto replayed in the same time slice._
 
 ## [Postman API Collection and Documentation]
+
+
 > Returns HTML of given url or skuId and crawls that url.
 
 #### Request
 ```
 curl --location -g --request GET 'http://localhost:9191/gethtml?url={{amazonUrl}}&skuId={{skuId}}'
 ```
+
 #### Response
 ```
 {
@@ -49,11 +52,15 @@ curl --location -g --request GET 'http://localhost:9191/gethtml?url={{amazonUrl}
     "htmlDocument":"<!doctype html>\n<!--[if IE 8]><html data-19ax5a9jf=\"dingo\" lang=\"en-in\" class=\"a-no-js a-lt-ie10 a-lt-ie9 a-ie8\"><![endif]-->\n<!--[if IE 9]><html data-19ax5a9jf=\"dingo\" lang=\"en-in\" class=\"a-no-j"
 }
 ```
+
+
 > Returns Product Details for given url or skuId.If Product is not crawled yet it gets crawled.
+
 #### Request
 ```
 curl --location -g --request GET 'http://localhost:9191/getProductDetails?skuId={{skuId}}&url={{amazonUrl}}'
 ```
+
 #### Response
 ```
 {
@@ -71,13 +78,15 @@ curl --location -g --request GET 'http://localhost:9191/getProductDetails?skuId=
     }
 }
 ```
-> Fetches latest product details of a url or skuId before a given timestamp. URL is the source of truth here.
 
+
+> Fetches latest product details of a url or skuId before a given timestamp. URL is the source of truth here.
 
 #### Request
 ```
 curl --location -g --request GET 'http://localhost:9191/getProductDetailsBT?timestamp={{timestamp}}&url={{amazonUrl}}&skuId={{skuId}}'
 ```
+
 #### Response
 ```
 {
@@ -95,11 +104,15 @@ curl --location -g --request GET 'http://localhost:9191/getProductDetailsBT?time
     }
 }
 ```
+
+
 > Returns Price Trends for a particular skuId. skuId is mandatory field here.
+
 #### Request
 ```
 curl --location -g --request GET 'http://localhost:9191/getPriceTrend?skuId={{skuId}}'
 ```
+
 #### Response
 ```
 {
@@ -152,12 +165,15 @@ curl --location -g --request GET 'http://localhost:9191/getPriceTrend?skuId={{sk
     ]
 }
 ```
+
+
 > Returns all crawled products till now.
 
 #### Request
 ```
 curl --location --request GET 'http://localhost:9191/getAllProducts'
 ```
+
 #### Response
 ```
 {
