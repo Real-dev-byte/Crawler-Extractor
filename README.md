@@ -91,7 +91,7 @@ curl --location -g --request GET 'http://localhost:9191/getProductDetails?skuId=
 
 &nbsp;
 
-> Fetches latest product details of a url or skuId before a given timestamp. URL is the source of truth here.
+> Fetches latest product details of a url or skuId before a given timestamp. 
 
 
 #### Request
