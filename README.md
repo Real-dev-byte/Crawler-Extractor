@@ -38,9 +38,10 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 ## [Postman API Collection and Documentation]
 
 ## API CONTRACT
-
+&nbsp;
 > Returns HTML of given url or skuId and crawls that url.
 
+&nbsp;
 #### Request
 ```
 curl --location -g --request GET 'http://localhost:9191/gethtml?url={{amazonUrl}}&skuId={{skuId}}'
@@ -53,7 +54,7 @@ curl --location -g --request GET 'http://localhost:9191/gethtml?url={{amazonUrl}
     "htmlDocument":"<!doctype html>\n<!--[if IE 8]><html data-19ax5a9jf=\"dingo\" lang=\"en-in\" class=\"a-no-js a-lt-ie10 a-lt-ie9 a-ie8\"><![endif]-->\n<!--[if IE 9]><html data-19ax5a9jf=\"dingo\" lang=\"en-in\" class=\"a-no-j"
 }
 ```
-
+&nbsp;
 
 
 > Returns Product Details for given url or skuId.If Product is not crawled yet it gets crawled.
@@ -82,7 +83,7 @@ curl --location -g --request GET 'http://localhost:9191/getProductDetails?skuId=
 }
 ```
 
-
+&nbsp;
 
 > Fetches latest product details of a url or skuId before a given timestamp. URL is the source of truth here.
 
@@ -111,7 +112,7 @@ curl --location -g --request GET 'http://localhost:9191/getProductDetailsBT?time
 ```
 
 
-
+&nbsp;
 > Returns Price Trends for a particular skuId. skuId is mandatory field here.
 
 
@@ -174,7 +175,7 @@ curl --location -g --request GET 'http://localhost:9191/getPriceTrend?skuId={{sk
 ```
 
 
-
+&nbsp;
 > Returns all crawled products till now.
 
 
