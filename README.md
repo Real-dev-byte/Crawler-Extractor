@@ -30,6 +30,9 @@ _Note: producttbl and product_status has one to many bidirectional relationship_
 - Fetches Product Details from Amazon URL.(More in Postman API Collection Section)
 - Support for Scheduled crawling rate after a particular time delay.
 - Producer consumer pattern with Blocking queue for handling scheduling of crawls.
+- Scheduled Crawling in product_status Table snapshot
+![Scheduled Crawling Rate](https://github.com/Real-dev-byte/Crawler-Extractor/blob/6b78db5aa8f1bf145313897c8b5b802d3767f1db/Scheduled%20crawling%20rate.png
+)
 - Response Time of every API in logs.
 ## [Postman API Collection and Documentation]
     
