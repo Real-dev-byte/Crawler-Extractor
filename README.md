@@ -22,7 +22,7 @@
 - product_id column is a foreign key referencing to primary key of product table.
 -  This was required for getting product details before a particular timestamp.
 
-_Note: producttbl and product_status has one to many bidirectional relationship_
+_Note: product_tbl and product_status has one to many bidirectional relationship_
 
 ![GitHub Logo](https://github.com/Real-dev-byte/Crawler-Extractor/blob/8da5efdb0f96e92a0b887dd9d5a2d263b656b009/DatabaseScheme.png
 )
