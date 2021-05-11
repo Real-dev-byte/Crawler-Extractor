@@ -6,6 +6,7 @@ import com.crawlerAndExtractor.project.repository.ProductRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,9 @@ public class CrawlerSchedulerService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private TaskExecutor taskExecutor;
+
     @Scheduled(fixedRate = Constants.CRAWL_TIME_DIFFERENCE)
     public void crawlPages(){
 
@@ -36,7 +40,14 @@ public class CrawlerSchedulerService {
             String ProductUrl = "https://www.amazon.in/dp/" + product.getSkuId();
             //log.info("For URL: {} time lastUpdated is {} ",ProductUrl, diff);
             if(diff >= Constants.CRAWL_TIME_DIFFERENCE){
-                QueueService.getInstance().putEventInQueue(ProductUrl,productService);
+                taskExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO add long running task
+                        QueueService.getInstance().putEventInQueue(ProductUrl,productService);
+                    }
+                });
+
             }
         }
     }

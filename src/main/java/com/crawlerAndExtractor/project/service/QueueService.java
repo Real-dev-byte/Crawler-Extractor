@@ -60,7 +60,7 @@ public class QueueService {
                     try {
                         baseResponse = prodService.gethtml(finalUrl, null);
                     } catch (Exception e) {
-                        log.error("Error occured while fetching URL: %s",finalUrl);
+                        log.error("Error occured while fetching URL: {}",finalUrl);
                         //Push the URL to the end of the queue for retrying crawling this url
                         putEventInQueue(finalUrl,prodService);
                     }

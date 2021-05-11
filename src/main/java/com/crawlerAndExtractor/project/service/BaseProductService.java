@@ -50,7 +50,7 @@ public abstract class BaseProductService {
                     .timeout(0)
                     .cookies(cookies)
                     .get();
-            log.info(String.valueOf(document));
+            //log.info(String.valueOf(document));
                 Title = document.getElementById("productTitle");
                 ProductDescription = document.select("div#productDescription p").first();
                 Price = document.getElementById("priceblock_ourprice");
