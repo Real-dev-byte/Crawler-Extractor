@@ -34,6 +34,8 @@ product_tbl and product_status has one to many bidirectional relationship
 - Support for Scheduled crawling rate after a particular time delay.
 - Producer consumer pattern with Blocking queue for handling scheduling of crawls.
 - Response Time of every API in logs.
+- Used Thread pool for Crawling.
+- Spoofing using randomized user agents.
 - Scheduled Crawling in product_status Table snapshot(1 crawl/sec)
 ![Scheduled Crawling Rate](https://github.com/Real-dev-byte/Crawler-Extractor/blob/2b65c62eea4f6cbd75b0098c86f706691c4c38fd/crawlrate.png)
 
