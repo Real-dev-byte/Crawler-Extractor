@@ -68,7 +68,7 @@ public class QueueService {
                         putEventInQueue(finalUrl,prodService);
                     }
                     finally {
-                        log.info("HTML: {}",String.valueOf(baseResponse));
+                        //log.info("HTML: {}",String.valueOf(baseResponse));
                         Thread.sleep(Constants.URL_CRAWL_DELAY);
                     }
                 } catch (InterruptedException ex) {
