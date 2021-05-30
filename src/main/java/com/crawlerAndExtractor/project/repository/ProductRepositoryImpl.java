@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -18,8 +19,11 @@ import java.util.*;
 public class ProductRepositoryImpl {
     private static final Logger log = LoggerFactory.getLogger(ProductRepositoryImpl.class);
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductRepositoryImpl(@Lazy ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public Product createProduct(BaseProductService.URLtoSKUMapping fetcURL, Product product, String skuId, Element Title, Element Price, Element ProductDescription, Element OverallCount,String[] Ratings) {
 

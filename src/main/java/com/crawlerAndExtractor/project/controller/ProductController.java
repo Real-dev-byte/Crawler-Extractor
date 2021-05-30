@@ -19,8 +19,11 @@ import java.sql.Timestamp;
 public class ProductController {
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @RequestMapping(value = "/gethtml", method = RequestMethod.GET)
     public BaseResponse gethtml(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpServletResponse,

@@ -19,14 +19,17 @@ import java.util.List;
 public class CrawlerSchedulerService {
     private static final Logger log = LoggerFactory.getLogger(CrawlerSchedulerService.class);
 
-    @Autowired
-    private ProductRepositoryImpl productRepository;
+    private final ProductRepositoryImpl productRepository;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @Autowired
-    private TaskExecutor taskExecutor;
+    private final TaskExecutor taskExecutor;
+
+    public CrawlerSchedulerService(ProductRepositoryImpl productRepository, ProductService productService, TaskExecutor taskExecutor) {
+        this.productRepository = productRepository;
+        this.productService = productService;
+        this.taskExecutor = taskExecutor;
+    }
 
     @Scheduled(fixedRate = Constants.CRAWL_TIME_DIFFERENCE)
     public void crawlPages(){

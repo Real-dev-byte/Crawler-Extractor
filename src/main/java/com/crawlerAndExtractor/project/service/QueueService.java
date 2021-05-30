@@ -21,7 +21,10 @@ public class QueueService {
 
     public static QueueService getInstance() {
         if (instance == null) {
-            instance = new QueueService();
+            synchronized (QueueService.class) {
+                if(instance == null)
+                    instance = new QueueService();
+            }
         }
         return instance;
     }

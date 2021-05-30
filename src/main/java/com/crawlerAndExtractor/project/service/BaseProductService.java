@@ -22,8 +22,10 @@ import java.util.*;
 
 
 public abstract class BaseProductService {
-    @Autowired
-    private ProductRepositoryImpl productRepository;
+    private final ProductRepositoryImpl productRepository;
+    BaseProductService(ProductRepositoryImpl productRepository){
+        this.productRepository = productRepository;
+    }
 
     private static final Logger log = LoggerFactory.getLogger(BaseProductService.class);
 

@@ -19,8 +19,12 @@ import java.util.*;
 @Service
 public class ProductService extends BaseProductService{
     private static final Logger log = LoggerFactory.getLogger(ProductService.class);
-    @Autowired
-    private ProductRepositoryImpl productRepository;
+    private final ProductRepositoryImpl productRepository;
+
+    public ProductService(ProductRepositoryImpl productRepository) {
+        super(productRepository);
+        this.productRepository = productRepository;
+    }
 
     /***
      *
